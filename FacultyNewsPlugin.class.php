@@ -45,7 +45,7 @@ STUDIP.FacultyNews = {
   }
 };
 jQuery('document').ready(function(){
-    var position = jQuery('img[src$=breaking-news.png]').size() - 1;
+    var position = jQuery('img[src$="breaking-news.png"]').size() - 1;
     jQuery(jQuery('.index_box')[position]).after(jQuery('#facultynewsplugin').parents('.index_box'));
 });
 EOT;

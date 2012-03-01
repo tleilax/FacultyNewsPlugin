@@ -1,5 +1,5 @@
 pluginclassname=FacultyNewsPlugin
 pluginname=Ankündigungen der Fakultäten
 origin=data-quest
-version=1
+version=1.0.1
 studipMinVersion=2.0
