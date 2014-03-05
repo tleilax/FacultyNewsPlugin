@@ -44,7 +44,7 @@ STUDIP.FacultyNews = {
     jQuery("#news_item_" + id + " .printhead a.tree").css("font-weight", "normal");
   }
 };
-jQuery('document').ready(function(){
+jQuery(document).ready(function(){
     var position = jQuery('img[src$="breaking-news.png"]').size() - 1;
     jQuery(jQuery('.index_box')[position]).after(jQuery('#facultynewsplugin').parents('.index_box'));
 });
@@ -95,11 +95,20 @@ EOT;
 
     function getPortalTemplate()
     {
-        $last_inst_news_open =& $GLOBALS['user']->user_vars['last_inst_news_open'];
+        $last_inst_news_open = $GLOBALS['user']->cfg->last_inst_news_open;
         if (Request::get('faculty_news_toggle')) {
             if (Request::get('faculty_news_toggle') == $last_inst_news_open) $last_inst_news_open = null;
             else $last_inst_news_open = Request::get('faculty_news_toggle');
         }
+		if ($last_inst_news_open !== $GLOBALS['user']->cfg->last_inst_news_open) {
+			try {
+				$GLOBALS['user']->cfg->store('last_inst_news_open', $last_inst_news_open);
+			} catch (Exception $e) {
+				$GLOBALS['user']->cfg->create('last_inst_news_open', array(
+					'value' => $last_inst_news_open,
+				));
+			}
+		}
         //$institutes = Institute::findBySql('Institut_id = fakultaets_id ORDER BY Name ASC');
         $institutes = Institute::findBySql("Institut_id IN (SELECT Institut_id FROM user_inst WHERE user_id='".$GLOBALS['user']->id."' AND inst_perms ='user') ORDER BY Name ASC");
         if (count($institutes)) {
@@ -157,7 +166,7 @@ EOT;
             $template = $GLOBALS['template_factory']->open('shared/string.php');
             $template->set_attribute('content', ob_get_clean());
             $template->set_attribute('title', _("Ankündigungen der Fakultäten"));
-            $template->set_attribute('icon_url',Assets::image_path('icons/16/white/breaking-news.png'));
+            $template->set_attribute('icon_url',Assets::image_path('icons/16/white/news.png'));
             return $template;
         }
     }
