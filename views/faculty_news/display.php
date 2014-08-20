@@ -7,19 +7,17 @@
                 <section class="contentbox">
                     <article class="<?= ContentBoxHelper::classes($new['institut']->institut_id, $newContent) ?>" id="<?= $new->id ?>">
                         <header>
-                            <nav>
-                                <? if ($new['isAdmin']) : ?>
-                                    <a href="<?= URLHelper::getURL('dispatch.php/news/edit_news/new/' . $new['institut']->institut_id) ?>" rel="get_dialog">
-                                        <?= Assets::img('icons/16/blue/add.png', array('style' => 'vertical-align:middle')) ?>
-                                    </a>
-                                <? endif; ?>
-                            </nav>
                             <h1>
                                 <a href="<?= ContentBoxHelper::href($new['institut']->institut_id) ?>">
                                     <?= htmlReady($new['institut']->name) ?>
                                     <? !isset($new['newNews']) ? $new['newNews'] = 0 : '' ?>
                                     <?= count($new['news']) == 0 ? '(keine News)' : sprintf('(%s News, %s neue)', count($new['news']), $new['newNews']) ?>
                                 </a>
+                                <? if ($new['isAdmin']) : ?>
+                                    <a style="float: right" href="<?= URLHelper::getURL('dispatch.php/news/edit_news/new/' . $new['institut']->institut_id) ?>" rel="get_dialog">
+                                        <?= Assets::img('icons/16/blue/add.png', array('style' => 'vertical-align:middle', 'title' => 'News erstellen')) ?>
+                                    </a>
+                                <? endif; ?>
                             </h1>
                         </header>
                         <section>
