@@ -2,5 +2,5 @@ pluginname=Ankündigung der Einrichtungen
 pluginclassname=FacultyNewsPlugin
 description=Mit diesem Widget werden Ihnen die Akündigungen der Ihnen zugewiesenen Einrichtungen angezeigt
 origin=UOL
-version=1.0
+version=1.2
 studipMinVersion=3.0
