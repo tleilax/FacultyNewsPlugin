@@ -33,7 +33,7 @@
                         </header>
                         <section>
                             <? if (!empty($new['news'])) : ?>
-                                <table class="collapsable default" style='width:100%' >
+                                <table class="collapsable default" style="width:100%; margin-top: 10px;">
                                     <? foreach ($new['news'] as $entry) : ?>
                                         <tbody class="<?= $entry['news_id'] != Request::get('news_id_open') ? 'collapsed' : '' ?>">
                                             <? $user = new User($entry['user_id']); ?>
