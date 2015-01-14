@@ -13,12 +13,23 @@
                                     <? !isset($new['newNews']) ? $new['newNews'] = 0 : '' ?>
                                     <?= count($new['news']) == 0 ? '(keine News)' : sprintf('(%s News, %s neue)', count($new['news']), $new['newNews']) ?>
                                 </a>
-                                <? if ($new['isAdmin']) : ?>
-                                    <a style="float: right" href="<?= URLHelper::getURL('dispatch.php/news/edit_news/new/' . $new['institut']->institut_id) ?>" rel="get_dialog">
-                                        <?= Assets::img('icons/16/blue/add.png', array('style' => 'vertical-align:middle', 'title' => 'News erstellen')) ?>
+                                </h1>
+                                <div style="float:right;">
+                                <? if($new['newNews']> 0 ) : ?>    
+                                    <a href="<?= PluginEngine::getURL('FacultyNewsPlugin/facultyNews').'/setRead/'.$new['institut']->institut_id.'/true'?>">
+                                        <?= Assets::img('icons/16/blue/refresh.png', 
+                                            array('style' => 'vertical-align:middle', 'title' => _('News dieser Einrichtung als gelesen markieren'))) ?>
                                     </a>
                                 <? endif; ?>
-                            </h1>
+                                <? if ($new['isAdmin']) : ?>
+                                    <a href="<?= URLHelper::getURL('dispatch.php/news/edit_news/new/' . $new['institut']->institut_id) ?>" rel="get_dialog">
+                                        <?= Assets::img('icons/16/blue/add.png', 
+                                                array('style' => 'vertical-align:middle', 'title' => _('News erstellen'))) ?>
+                                    </a>
+                                <? endif; ?>    
+                                </div>
+                                
+                            
                         </header>
                         <section>
                             <? if (!empty($new['news'])) : ?>

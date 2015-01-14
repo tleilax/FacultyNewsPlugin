@@ -31,10 +31,18 @@ class FacultyNewsController extends StudipController {
         $this->render_nothing();
     }
     
-    public function setRead_action($news_id)
+    public function setRead_action($news_id, $all = false)
     {
-        object_add_view($news_id);
-        $this->render_nothing();
+        if(!$all && $all != 'true'){
+            object_add_view($news_id);
+            $this->render_nothing();
+        } else {
+            $facultynews = StudipNews::GetNewsByRange($news_id, false);
+            foreach($facultynews as $news){
+                object_set_visit($news['news_id'], 'news', $GLOBALS['user']->id);
+            }
+            $this->redirect(URLHelper::getLink('dispatch.php/start'));
+        }
     }
     
     public function display_action() 
