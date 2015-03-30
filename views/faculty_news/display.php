@@ -5,10 +5,11 @@
             <? if (!empty($new['news']) || $new['isAdmin']) : ?>
                 <? $newContent = $new['newNews'] > 0 ? true : false ?> 
                 <section class="contentbox">
-                    <article class="<?= ContentBoxHelper::classes($new['institut']->institut_id, $newContent) ?>" id="<?= $new->id ?>">
+                    <article class="<?= ContentBoxHelper::classes($new['institut']->institut_id, $newContent) ?>" id="<?= $new['institut']->institut_id ?>"
+                             data-visiturl="">
                         <header>
                             <h1>
-                                <a href="<?= ContentBoxHelper::href($new['institut']->institut_id) ?>">
+                                <a href="<?= ContentBoxHelper::href($new['institut']->institut_id, array('contentbox_type' => 'news')) ?>">
                                     <?= htmlReady($new['institut']->name) ?>
                                     <? !isset($new['newNews']) ? $new['newNews'] = 0 : '' ?>
                                     <?= count($new['news']) == 0 ? '(keine News)' : sprintf('(%s News, %s neue)', count($new['news']), $new['newNews']) ?>
@@ -40,7 +41,7 @@
                                             <tr class="table_header header-row">
                                                 <td class="toggle-indicator" style="width: 50%" 
                                                     onclick="STUDIP.FACULTYNEWS.showNews('<?= $entry['news_id'] ?>')">
-                                                    <a href="<?= URLHelper::getURL('', 
+                                                    <a href="<?= URLHelper::getURL('dispatch.php/start', 
                                                             array('contentbox_open' => Request::get('contentbox_open'),
                                                                 'news_id_open' => $entry['news_id']))?>"
                                                             name="<?= $entry['news_id'] ?>" class="toggler">
