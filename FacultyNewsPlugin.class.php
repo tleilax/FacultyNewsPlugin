@@ -18,28 +18,26 @@ class FacultyNewsPlugin extends StudIPPlugin implements PortalPlugin
 {
     function getPortalTemplate()
     {
-            $trails_root = $this->getPluginPath();
-            $dispatcher = new Trails_Dispatcher($trails_root, "plugins.php", 'display');
-            $controller = new FacultyNewsController($dispatcher); //NewsController($dispatcher);
+        $trails_root = $this->getPluginPath();
+        $dispatcher = new Trails_Dispatcher($trails_root, "plugins.php", 'display');
+        $controller = new FacultyNewsController($dispatcher); 
 
-            $response = $controller->relay('facultyNews/display');
-            $template = $GLOBALS['template_factory']->open('shared/string');
-            $template->content = $response->body;
+        $response = $controller->relay('facultyNews/display');
+        $template = $GLOBALS['template_factory']->open('shared/string');
+        $template->content = $response->body;
 
-            $script_attributes = array(
-                'src' => $GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP']
-                . $this->getPluginPath()
-                . '/assets/application.js'
-            );
-            PageLayout::addHeadElement('script', $script_attributes, '');
+        $script_attributes = array(
+            'src' => $GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP']
+            . $this->getPluginPath()
+            . '/assets/application.js'
+        );
+        PageLayout::addHeadElement('script', $script_attributes, '');
 
-            $ajaxURL = PluginEngine::getURL('FacultyNewsPlugin/facultyNews');
-            $init_js = 'STUDIP.FACULTYNEWS.setAjaxURL(\'' . $ajaxURL . '\');';
-            PageLayout::addHeadElement('script', array(), $init_js);
+        $ajaxURL = PluginEngine::getURL('FacultyNewsPlugin/facultyNews');
+        $init_js = 'STUDIP.FACULTYNEWS.setAjaxURL(\'' . $ajaxURL . '\');';
+        PageLayout::addHeadElement('script', array(), $init_js);
 
-
-            return $template;
-        
+        return $template;
     }
 
     function getPluginName()
