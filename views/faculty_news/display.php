@@ -29,8 +29,6 @@
                                     </a>
                                 <? endif; ?>    
                                 </div>
-                                
-                            
                         </header>
                         <section>
                             <? if (!empty($new['news'])) : ?>

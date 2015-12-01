@@ -11,8 +11,6 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP Core Plugin
  */
-
-require_once dirname(__FILE__) . '/../models/facultyNews.php';
 class FacultyNewsController extends StudipController {
 
     public function __construct($dispatcher)

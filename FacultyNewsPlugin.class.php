@@ -11,9 +11,7 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP Core Plugin
  */
-
-require_once 'controllers/facultyNews.php';
-
+require 'bootstrap.php';
 class FacultyNewsPlugin extends StudIPPlugin implements PortalPlugin 
 {
     function getPortalTemplate()
