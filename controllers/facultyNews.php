@@ -11,45 +11,33 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP Core Plugin
  */
-class FacultyNewsController extends StudipController {
-
-    public function __construct($dispatcher)
-    {
-        parent::__construct($dispatcher);
-        $this->plugin = $dispatcher->plugin;
-    }
-
-    public function before_filter(&$action, &$args) {
-        $this->set_layout($GLOBALS['template_factory']->open('layouts/base_without_infobox'));
-    }
- 
+class FacultyNewsController extends PluginController
+{
     public function setVisit_action($news_id)
     {
         object_set_visit($news_id, 'news', $GLOBALS['user']->id);
         //$this->render_nothing();
         $this->redirect(URLHelper::getLink('dispatch.php/start'));
     }
-    
+
     public function setRead_action($news_id, $all = false)
     {
-        if(!$all && $all != 'true'){
+        if (!$all && $all != 'true') {
             object_add_view($news_id);
-            //$this->render_nothing();
         } else {
             $facultynews = StudipNews::GetNewsByRange($news_id, false);
-            foreach($facultynews as $news){
+            foreach ($facultynews as $news) {
                 object_set_visit($news['news_id'], 'news', $GLOBALS['user']->id);
             }
-            //$this->redirect(URLHelper::getLink('dispatch.php/start'));
         }
         $this->redirect(URLHelper::getLink('dispatch.php/start'));
     }
-    
-    public function display_action() 
+
+    public function display_action()
     {
         $openNews = $news_id;
         $news_id = Request::get('news_id_open');
-        if($news_id != ''){
+        if ($news_id) {
             object_set_visit($news_id, 'news', $GLOBALS['user']->id);
             object_add_view($news_id);
         }
@@ -68,7 +56,7 @@ class FacultyNewsController extends StudipController {
     }
 
 // customized #url_for for plugins
-    function url_for($to)
+    public function url_for($to)
     {
         $args = func_get_args();
 
@@ -82,6 +70,6 @@ class FacultyNewsController extends StudipController {
         $args = array_map('urlencode', $args);
         $args[0] = $to;
 
-        return PluginEngine::getURL($this->dispatcher->plugin, $params, join('/', $args));
-    } 
+        return PluginEngine::getURL($this->plugin, $params, join('/', $args));
+    }
 }

@@ -14,8 +14,14 @@
 require 'bootstrap.php';
 class FacultyNewsPlugin extends StudIPPlugin implements PortalPlugin 
 {
-    function getPortalTemplate()
+    public function getPortalTemplate()
     {
+        PageLayout::addScript($this->getPluginURL() . '/assets/application.js');
+
+        $ajaxURL = PluginEngine::getURL($this, array(), 'facultyNews', true);
+        $init_js = 'STUDIP.FACULTYNEWS.setAjaxURL(\'' . $ajaxURL . '\');';
+        PageLayout::addHeadElement('script', array(), $init_js);
+
         $trails_root = $this->getPluginPath();
         $dispatcher = new Trails_Dispatcher($trails_root, "plugins.php", 'display');
         $controller = new FacultyNewsController($dispatcher); 
@@ -24,30 +30,12 @@ class FacultyNewsPlugin extends StudIPPlugin implements PortalPlugin
         $template = $GLOBALS['template_factory']->open('shared/string');
         $template->content = $response->body;
 
-        $script_attributes = array(
-            'src' => $GLOBALS['CANONICAL_RELATIVE_PATH_STUDIP']
-            . $this->getPluginPath()
-            . '/assets/application.js'
-        );
-        PageLayout::addHeadElement('script', $script_attributes, '');
-
-        $ajaxURL = PluginEngine::getURL('FacultyNewsPlugin/facultyNews');
-        $init_js = 'STUDIP.FACULTYNEWS.setAjaxURL(\'' . $ajaxURL . '\');';
-        PageLayout::addHeadElement('script', array(), $init_js);
-
         return $template;
     }
 
-    function getPluginName()
+    public function getPluginName()
     {
         return _('Ankündigung der Einrichtungen');
-    }
-
-    function getHeaderOptions()
-    {
-        $options = array();
-        
-        return $options;
     }
 }
 

@@ -17,7 +17,7 @@
                                 </h1>
                                 <div style="float:right;">
                                 <? if($new['newNews']> 0 ) : ?>    
-                                    <a href="<?= PluginEngine::getURL('FacultyNewsPlugin/facultyNews').'/setRead/'.$new['institut']->institut_id.'/true'?>">
+                                    <a href="<?= $controller->url_for('facultyNews/setRead/'.$new['institut']->institut_id.'/true') ?>">
                                         <?= Assets::img('icons/16/blue/refresh.png', 
                                             array('style' => 'vertical-align:middle', 'title' => _('News dieser Einrichtung als gelesen markieren'))) ?>
                                     </a>
@@ -92,6 +92,6 @@
             <? endif; ?>
         <? endforeach; ?>
 <? else : ?>
-        <span style="margin-left: 10px;"><?= _('Ihr Nutzerkonto ist keiner Fakultät zugeordnet') ?></span>
+    <span style="margin-left: 10px;"><?= _('Ihr Nutzerkonto ist keiner Fakultät zugeordnet') ?></span>
 <? endif; ?>
 </form>
