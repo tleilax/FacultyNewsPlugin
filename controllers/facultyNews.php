@@ -70,6 +70,6 @@ class FacultyNewsController extends PluginController
         $args = array_map('urlencode', $args);
         $args[0] = $to;
 
-        return PluginEngine::getURL($this->plugin, $params, join('/', $args));
+        return PluginEngine::getURL($this->dispatcher->current_plugin, $params, join('/', $args));
     }
 }

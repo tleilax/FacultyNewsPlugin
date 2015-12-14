@@ -24,6 +24,7 @@ class FacultyNewsPlugin extends StudIPPlugin implements PortalPlugin
 
         $trails_root = $this->getPluginPath();
         $dispatcher = new Trails_Dispatcher($trails_root, "plugins.php", 'display');
+        $dispatcher->current_plugin = $this;
         $controller = new FacultyNewsController($dispatcher); 
 
         $response = $controller->relay('facultyNews/display');
