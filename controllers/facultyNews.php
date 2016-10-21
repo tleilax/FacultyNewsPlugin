@@ -16,7 +16,6 @@ class FacultyNewsController extends PluginController
     public function setVisit_action($news_id)
     {
         object_set_visit($news_id, 'news', $GLOBALS['user']->id);
-        //$this->render_nothing();
         $this->redirect(URLHelper::getLink('dispatch.php/start'));
     }
 
@@ -35,7 +34,6 @@ class FacultyNewsController extends PluginController
 
     public function display_action()
     {
-        $openNews = $news_id;
         $news_id = Request::get('news_id_open');
         if ($news_id) {
             object_set_visit($news_id, 'news', $GLOBALS['user']->id);

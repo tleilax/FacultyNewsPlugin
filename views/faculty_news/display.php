@@ -1,5 +1,5 @@
 
-<form class="studip_form">
+<form class="">
     <? if (isset($news)) : ?>
         <? foreach ($news as $new) : ?>
             <? if (!empty($new['news']) || $new['isAdmin']) : ?>
@@ -18,27 +18,30 @@
                                 <div style="float:right;">
                                 <? if($new['newNews']> 0 ) : ?>    
                                     <a href="<?= $controller->url_for('facultyNews/setRead/'.$new['institut']->institut_id.'/true') ?>">
-                                        <?= Assets::img('icons/16/blue/refresh.png', 
+                                        <?= Icon::create('refresh','clickable', 
                                             array('style' => 'vertical-align:middle', 'title' => _('News dieser Einrichtung als gelesen markieren'))) ?>
                                     </a>
                                 <? endif; ?>
                                 <? if ($new['isAdmin']) : ?>
                                     <a href="<?= URLHelper::getURL('dispatch.php/news/edit_news/new/' . $new['institut']->institut_id) ?>" rel="get_dialog">
-                                        <?= Assets::img('icons/16/blue/add.png', 
+                                        <?= Icon::create('add', 'clickable', 
                                                 array('style' => 'vertical-align:middle', 'title' => _('News erstellen'))) ?>
                                     </a>
                                 <? endif; ?>    
                                 </div>
                         </header>
                         <section>
+ 
                             <? if (!empty($new['news'])) : ?>
-                                <table class="collapsable default" style="width:100%; margin-top: 10px;">
+                                <table class="default nohover collapsable" style="width:99%; margin-top: 10px;">
                                     <? foreach ($new['news'] as $entry) : ?>
                                         <tbody class="<?= $entry['news_id'] != Request::get('news_id_open') ? 'collapsed' : '' ?>">
                                             <? $user = new User($entry['user_id']); ?>
-                                            <tr class="table_header header-row">
-                                                <td class="toggle-indicator" style="width: 50%" 
+                                            <tr class="header-row">
+                                                
+                                                <th class="toggle-indicator" style="white-space:nowrap;"  
                                                     onclick="STUDIP.FACULTYNEWS.showNews('<?= $entry['news_id'] ?>')">
+                                                    
                                                     <a href="<?= URLHelper::getURL('dispatch.php/start', 
                                                             array('contentbox_open' => Request::get('contentbox_open'),
                                                                 'news_id_open' => $entry['news_id']))?>"
@@ -47,41 +50,56 @@
                                                         <? if (!object_get_visit($entry['news_id'], "news", false, false) 
                                                                 || $entry['chdate'] >= object_get_visit($entry['news_id'], "news", false, false)) :?> 
 
-                                                            <?= Assets::img('icons/16/red/news.png', 
+                                                            <?= Icon::create('news+new','clickable', 
                                                                     array('style' => 'vertical-align:middle')) ?>
                                                         <? else : ?>
-                                                            <?= Assets::img('icons/16/grey/news.png', 
+                                                            <?= Icon::create('news', 'clickable',
                                                                     array('style' => 'vertical-align:middle')) ?>
                                                         <? endif; ?>
                                                         <?= htmlReady($entry['topic']) ?>
                                                     </a>
-                                                </td>
-                                                <td>
+                                                    
+                                                </th>
+                                                
+                                                <th class="dont-hide">
                                                     <a href="<?=$user->user_id != $GLOBALS['user']->user_id ?
                                                                URLHelper::getURL('dispatch.php/profile?username=' . $user->username) :
                                                                URLHelper::getURL('dispatch.php/profile?')?>">
                                                         <?= htmlReady($entry['author']) ?>
                                                     </a>
-                                                </td>
-                                                <td><?= date("d.m.Y", $entry['date']) ?></td>
-                                                <td>| <span style="color: #050"><?= object_return_views($entry['news_id']) ?></span> |</td>
-                                                <td>
+                                                </th>
+                                                <th class="dont-hide">
+                                                    <?= strftime('%x', $entry['date']) ?>
+                                                </th>
+                                                <th class="dont-hide" style="white-space:nowrap;">
+                                                    | <span style="color: #050"><?= object_return_views($entry['news_id']) ?></span> |
+                                                </th>
+                                                <th class="dont-hide actions" style="white-space:nowrap;">
                                                     <? if ($new['isAdmin']) : ?>
-                                                        <a href=" <?= URLHelper::getLink('dispatch.php/news/edit_news/' . $entry['news_id']) ?>" rel='get_dialog' >
-                                                            <?= Assets::img('icons/16/blue/admin.png'); ?>
-                                                        </a>
-                                                        <a href=" <?= URLHelper::getLink('', array('delete_news' => $entry['news_id'])) ?>" >
-                                                            <?= Assets::img('icons/16/blue/trash.png'); ?>
-                                                        </a>
+                                                        <?= ActionMenu::get()
+                                                            ->addLink(
+                                                                URLHelper::getLink('dispatch.php/news/edit_news/' . $entry['news_id']), 
+                                                                _('Bearbeiten'), 
+                                                                    Icon::create('admin', 'clickable', 
+                                                                        ['title' => sprintf(_('Bearbeiten von %s'), htmlReady($entry['topic'])),]),
+                                                                    ['data-dialog' => '']
+                                                            )
+                                                            ->addLink(
+                                                                URLHelper::getLink('', array('delete_news' => $entry['news_id'])), 
+                                                                _('Löschen'),
+                                                                    Icon::create('trash', 'clickable', 
+                                                                        ['title' => sprintf(_('Löschen von %s'), htmlReady($entry['topic']))])
+                                                                ) ?>
+                                                        
                                                     <? endif; ?>
-                                                </td>
+                                                </th>
                                             </tr>
                                             <tr style="border: 1px solid graytext;margin-bottom: 5em;">
-                                                <td colspan="4"><?= formatReady($entry['body']) ?></td>
+                                                <td colspan="5"><?= formatReady($entry['body']) ?></td>
                                             </tr>
                                         </tbody>
                                 <? endforeach; ?>
-                                    <tr><td colspan="4"></td></tr>
+                                    <tr><td colspan="5"></td></tr>
                                 </table>
                                 <? else : ?>
                                     <span><?= _('Keine Ankündigungen vorhanden') ?></span>
@@ -91,7 +109,7 @@
                     </section>
             <? endif; ?>
         <? endforeach; ?>
-<? else : ?>
-    <span style="margin-left: 10px;"><?= _('Ihr Nutzerkonto ist keiner Fakultät zugeordnet') ?></span>
-<? endif; ?>
+    <? else : ?>
+        <span style="margin-left: 10px;"><?= _('Ihr Nutzerkonto ist keiner Fakultät zugeordnet') ?></span>
+    <? endif; ?>
 </form>
