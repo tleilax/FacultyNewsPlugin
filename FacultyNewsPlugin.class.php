@@ -12,7 +12,7 @@
  * @category    Stud.IP Core Plugin
  */
 require 'bootstrap.php';
-class FacultyNewsPlugin extends UOL\StudIPPlugin implements PortalPlugin
+class FacultyNewsPlugin extends UOL\Plugin implements PortalPlugin
 {
     const GETTEXT_DOMAIN = 'facultynews';
 
