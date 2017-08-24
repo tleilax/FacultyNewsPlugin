@@ -12,8 +12,10 @@
  * @category    Stud.IP Core Plugin
  */
 require 'bootstrap.php';
-class FacultyNewsPlugin extends StudIPPlugin implements PortalPlugin 
+class FacultyNewsPlugin extends UOL\StudIPPlugin implements PortalPlugin
 {
+    const GETTEXT_DOMAIN = 'facultynews';
+
     public function getPortalTemplate()
     {
         PageLayout::addScript($this->getPluginURL() . '/assets/application.js');
@@ -25,7 +27,7 @@ class FacultyNewsPlugin extends StudIPPlugin implements PortalPlugin
         $trails_root = $this->getPluginPath();
         $dispatcher = new Trails_Dispatcher($trails_root, "plugins.php", 'display');
         $dispatcher->current_plugin = $this;
-        $controller = new FacultyNewsController($dispatcher); 
+        $controller = new FacultyNewsController($dispatcher);
 
         $response = $controller->relay('facultyNews/display');
         $template = $GLOBALS['template_factory']->open('shared/string');
@@ -36,7 +38,6 @@ class FacultyNewsPlugin extends StudIPPlugin implements PortalPlugin
 
     public function getPluginName()
     {
-        return _('Ankündigung der Einrichtungen');
+        return $this->_('Ankündigung der Einrichtungen');
     }
 }
-

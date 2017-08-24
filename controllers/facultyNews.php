@@ -11,7 +11,7 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP Core Plugin
  */
-class FacultyNewsController extends PluginController
+class FacultyNewsController extends UOL\PluginController
 {
     public function setVisit_action($news_id)
     {
