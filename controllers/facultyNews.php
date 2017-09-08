@@ -11,8 +11,55 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
  * @category    Stud.IP Core Plugin
  */
-class FacultyNewsController extends UOL\PluginController
+class FacultyNewsController extends PluginController
 {
+    /**
+     * Constructs the controller and provide translations methods.
+     *
+     * @param object $dispatcher
+     * @see https://stackoverflow.com/a/12583603/982902 if you need to overwrite
+     *      the constructor of the controller
+     */
+    public function __construct($dispatcher)
+    {
+        parent::__construct($dispatcher);
+
+        $this->plugin = $dispatcher->current_plugin;
+
+        // Localization
+        $this->_ = function ($string) use ($dispatcher) {
+            return call_user_func_array(
+                [$dispatcher->current_plugin, '_'],
+                func_get_args()
+            );
+        };
+
+        $this->_n = function ($string0, $tring1, $n) use ($dispatcher) {
+            return call_user_func_array(
+                [$dispatcher->plugin, '_n'],
+                func_get_args()
+            );
+        };
+    }
+
+    /**
+     * Intercepts all non-resolvable method calls in order to correctly handle
+     * calls to _ and _n.
+     *
+     * @param string $method
+     * @param array  $arguments
+     * @return mixed
+     * @throws RuntimeException when method is not found
+     */
+    public function __call($method, $arguments)
+    {
+        $variables = get_object_vars($this);
+        if (isset($variables[$method]) && is_callable($variables[$method])) {
+            return call_user_func_array($variables[$method], $arguments);
+        }
+        throw new RuntimeException("Method {$method} does not exist");
+    }
+
     public function setVisit_action($news_id)
     {
         object_set_visit($news_id, 'news', $GLOBALS['user']->id);
@@ -68,6 +115,6 @@ class FacultyNewsController extends UOL\PluginController
         $args = array_map('urlencode', $args);
         $args[0] = $to;
 
-        return PluginEngine::getURL($this->dispatcher->current_plugin, $params, join('/', $args));
+        return PluginEngine::getURL($this->plugin, $params, join('/', $args));
     }
 }
