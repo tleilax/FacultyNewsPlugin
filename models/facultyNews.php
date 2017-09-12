@@ -20,7 +20,7 @@ class FacultyNews
      * created for this id. TODO Is this a good idea?
      *
      *
-     * @return array 
+     * @return array
      */
     public static function getFacultyNews(){
         $institutes = Institute::findBySql('Institut_id IN (SELECT Institut_id FROM user_inst WHERE user_id = :user_id) ORDER BY Name ASC',
@@ -31,11 +31,11 @@ class FacultyNews
             $tmp['institut'] = $institut;
             $tmp['isAdmin']  = FacultyNews::editableForUser($institut->Institut_id);
             $tmp['news'] = StudipNews::GetNewsByRange($institut->getId(), true);
-            $result[$institut->Institut_id] = $tmp;    
+            $result[$institut->Institut_id] = $tmp;
         }
         return $result;
     }
-    
+
      /**
      * Get a file object for the given id. May be file or directory.
      * If the file does not exist, a new (virtual) RootDirectory is
@@ -54,4 +54,3 @@ class FacultyNews
         return $stm->fetchColumn();
     }
 }
-
