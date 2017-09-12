@@ -38,7 +38,7 @@
                                     <? $user = new User($entry['user_id']); ?>
                                     <tr class="header-row">
 
-                                        <th class="toggle-indicator" style="white-space:nowrap;"
+                                        <th class="toggle-indicator"
                                             onclick="STUDIP.FACULTYNEWS.showNews('<?= $entry['news_id'] ?>')">
 
                                             <a href="<?= URLHelper::getURL('dispatch.php/start',
