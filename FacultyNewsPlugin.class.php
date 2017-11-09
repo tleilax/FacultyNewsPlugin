@@ -46,7 +46,7 @@ class FacultyNewsPlugin extends StudIPPlugin implements PortalPlugin
 
     public function getPluginName()
     {
-        return $this->_('Ank¸ndigung der Einrichtungen');
+        return $this->_('Ank√ºndigung der Einrichtungen');
     }
 
     /**
