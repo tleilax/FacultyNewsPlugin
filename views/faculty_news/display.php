@@ -84,9 +84,9 @@
                                                 )
                                                 ->addLink(
                                                     URLHelper::getLink('', array('delete_news' => $entry['news_id'])),
-                                                    $_('Löschen'),
+                                                    $_('LÃ¶schen'),
                                                         Icon::create('trash', 'clickable',
-                                                            ['title' => sprintf($_('Löschen von %s'), htmlReady($entry['topic']))])
+                                                            ['title' => sprintf($_('LÃ¶schen von %s'), htmlReady($entry['topic']))])
                                                     ) ?>
 
                                         <? endif; ?>
@@ -100,7 +100,7 @@
                             <tr><td colspan="5"></td></tr>
                         </table>
                         <? else : ?>
-                            <span><?= $_('Keine Ankündigungen vorhanden') ?></span>
+                            <span><?= $_('Keine AnkÃ¼ndigungen vorhanden') ?></span>
                         <? endif; ?>
                     </section>
                 </article>
@@ -108,6 +108,6 @@
         <? endif; ?>
     <? endforeach; ?>
 <? else : ?>
-    <span style="margin-left: 10px;"><?= $_('Ihr Nutzerkonto ist keiner Fakultät zugeordnet') ?></span>
+    <span style="margin-left: 10px;"><?= $_('Ihr Nutzerkonto ist keiner FakultÃ¤t zugeordnet') ?></span>
 <? endif; ?>
 </form>
