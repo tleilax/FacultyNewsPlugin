@@ -1,5 +1,4 @@
-
-<form class="">
+<form class="default">
 <? if (isset($news)) : ?>
     <? foreach ($news as $new) : ?>
         <? if (!empty($new['news']) || $new['isAdmin']) : ?>
@@ -18,13 +17,13 @@
                             <div style="float:right;">
                             <? if ($new['newNews'] > 0 ) : ?>
                                 <a href="<?= $controller->url_for('facultyNews/setRead/'.$new['institut']->institut_id.'/true') ?>">
-                                    <?= Icon::create('refresh','clickable',
+                                    <?= Icon::create('refresh', Icon::ROLE_CLICKABLE,
                                         array('style' => 'vertical-align:middle', 'title' => $_('News dieser Einrichtung als gelesen markieren'))) ?>
                                 </a>
                             <? endif; ?>
                             <? if ($new['isAdmin']) : ?>
                                 <a href="<?= URLHelper::getURL('dispatch.php/news/edit_news/new/' . $new['institut']->institut_id) ?>" rel="get_dialog">
-                                    <?= Icon::create('add', 'clickable',
+                                    <?= Icon::create('add', Icon::ROLE_CLICKABLE,
                                             array('style' => 'vertical-align:middle', 'title' => $_('News erstellen'))) ?>
                                 </a>
                             <? endif; ?>
@@ -49,10 +48,10 @@
                                                 <? if (!object_get_visit($entry['news_id'], "news", false, false)
                                                         || $entry['chdate'] >= object_get_visit($entry['news_id'], 'news', false, false)) :?>
 
-                                                    <?= Icon::create('news+new','clickable',
+                                                    <?= Icon::create('news+new', Icon::ROLE_CLICKABLE,
                                                             array('style' => 'vertical-align:middle')) ?>
                                                 <? else : ?>
-                                                    <?= Icon::create('news', 'clickable',
+                                                    <?= Icon::create('news', Icon::ROLE_CLICKABLE,
                                                             array('style' => 'vertical-align:middle')) ?>
                                                 <? endif; ?>
                                                 <?= htmlReady($entry['topic']) ?>
@@ -78,14 +77,14 @@
                                                 ->addLink(
                                                     URLHelper::getLink('dispatch.php/news/edit_news/' . $entry['news_id']),
                                                     $_('Bearbeiten'),
-                                                        Icon::create('admin', 'clickable',
+                                                        Icon::create('admin', Icon::ROLE_CLICKABLE,
                                                             ['title' => sprintf($_('Bearbeiten von %s'), htmlReady($entry['topic'])),]),
                                                         ['data-dialog' => '']
                                                 )
                                                 ->addLink(
                                                     URLHelper::getLink('', array('delete_news' => $entry['news_id'])),
                                                     $_('Löschen'),
-                                                        Icon::create('trash', 'clickable',
+                                                        Icon::create('trash', Icon::ROLE_CLICKABLE,
                                                             ['title' => sprintf($_('Löschen von %s'), htmlReady($entry['topic']))])
                                                     ) ?>
 
