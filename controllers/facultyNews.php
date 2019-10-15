@@ -1,15 +1,7 @@
 <?php
 /**
- * facultryNews.php -> FacultyNewsConroller
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
- *
- * @author      Stefan Osterloh <s.osterloh@uni-oldenburg.de>
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL version 2
- * @category    Stud.IP Core Plugin
+ * @author   Stefan Osterloh <s.osterloh@uni-oldenburg.de>
+ * @license  GPL2 or any later version
  */
 class FacultyNewsController extends PluginController
 {
@@ -23,8 +15,6 @@ class FacultyNewsController extends PluginController
     public function __construct($dispatcher)
     {
         parent::__construct($dispatcher);
-
-        $this->plugin = $dispatcher->current_plugin;
 
         // Localization
         $this->_ = function ($string) use ($dispatcher) {
@@ -57,25 +47,21 @@ class FacultyNewsController extends PluginController
         if (isset($variables[$method]) && is_callable($variables[$method])) {
             return call_user_func_array($variables[$method], $arguments);
         }
-        throw new RuntimeException("Method {$method} does not exist");
+        return parent::__call($method, $arguments);
     }
 
-    public function setVisit_action($news_id)
+    public function visit_action($id, $all = false)
     {
-        object_set_visit($news_id, 'news', $GLOBALS['user']->id);
-        $this->redirect(URLHelper::getLink('dispatch.php/start'));
-    }
-
-    public function setRead_action($news_id, $all = false)
-    {
-        if (!$all && $all != 'true') {
-            object_add_view($news_id);
+        if (!$all) {
+            object_set_visit($id, 'news', $GLOBALS['user']->id);
+            object_add_view($id);
         } else {
-            $facultynews = StudipNews::GetNewsByRange($news_id, false);
+            $facultynews = StudipNews::GetNewsByRange($id, false);
             foreach ($facultynews as $news) {
                 object_set_visit($news['news_id'], 'news', $GLOBALS['user']->id);
             }
         }
+
         $this->redirect(URLHelper::getLink('dispatch.php/start'));
     }
 
@@ -86,35 +72,25 @@ class FacultyNewsController extends PluginController
             object_set_visit($news_id, 'news', $GLOBALS['user']->id);
             object_add_view($news_id);
         }
-        $news = FacultyNews::getFacultyNews();
-        foreach ($news as $entry) {
+
+        $this->news = [];
+        foreach (FacultyNews::getFacultyNews() as $entry) {
             $iNews_new = 0;
             foreach ($entry['news'] as $news) {
-                $last_visit = object_get_visit($news['news_id'], "news", false, false);
+                $last_visit = object_get_visit($news['news_id'], 'news', false, false);
                 if ($last_visit === false || $news['chdate'] >= $last_visit) {
-                    $iNews_new++;
+                    $iNews_new += 1;
                 }
             }
-            $entry['newNews'] =  $iNews_new;
-            $this->news[] = $entry;
-        }
-    }
+            $entry['newNews'] = $iNews_new;
 
-// customized #url_for for plugins
-    public function url_for($to = '')
-    {
-        $args = func_get_args();
-
-        # find params
-        $params = array();
-        if (is_array(end($args))) {
-            $params = array_pop($args);
+            if (!empty($entry['news']) || $entry['isAdmin']) {
+                $this->news[] = $entry;
+            }
         }
 
-        # urlencode all but the first argument
-        $args = array_map('urlencode', $args);
-        $args[0] = $to;
-
-        return PluginEngine::getURL($this->plugin, $params, join('/', $args));
+        if (!$this->news) {
+            $this->render_template('faculty_news/no-news.php');
+        }
     }
 }
