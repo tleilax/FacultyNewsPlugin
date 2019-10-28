@@ -84,9 +84,7 @@ class FacultyNewsController extends PluginController
             }
             $entry['newNews'] = $iNews_new;
 
-            if (!empty($entry['news']) || $entry['isAdmin']) {
-                $this->news[] = $entry;
-            }
+            $this->news[] = $entry;
         }
 
         if (!$this->news) {
