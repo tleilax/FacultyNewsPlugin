@@ -26,7 +26,7 @@ class FacultyNews
                 'name'     => $institut->name,
                 'institut' => $institut,
                 'isAdmin'  => self::editableForUser($institut->Institut_id),
-                'news'     => StudipNews::GetNewsByRange($institut->id, true),
+                'news'     => StudipNews::GetNewsByRange($institut->id, true, true),
             ];
         }
         return $result;
