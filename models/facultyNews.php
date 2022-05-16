@@ -6,10 +6,7 @@
  */
 class FacultyNews
 {
-     /**
-      * @return array
-      */
-    public static function getFacultyNews()
+    public static function getFacultyNews(): array
     {
         $condition = 'Institut_id IN (
                         SELECT Institut_id
@@ -32,21 +29,16 @@ class FacultyNews
         return $result;
     }
 
-     /**
-     * @param string $inst_id  Institut_id
-     *
-     * @return bool
-     */
-    public static function editableForUser($inst_id)
+    public static function editableForUser(string $institute_id): bool
     {
         $query = "SELECT 1
                   FROM user_inst
                   WHERE Institut_id = :inst_id
                     AND user_id = :user_id
                     AND inst_perms = :perm";
-        return DBManager::get()->fetchColumn($query, [
-            ':inst_id' => $inst_id,
-            ':user_id' => $GLOBALS['user']->id,
+        return (bool) DBManager::get()->fetchColumn($query, [
+            ':inst_id' => $institute_id,
+            ':user_id' => User::findCurrent()->id,
             ':perm' => 'admin',
         ]);
     }
