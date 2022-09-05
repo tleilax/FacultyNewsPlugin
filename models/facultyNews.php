@@ -8,11 +8,16 @@ class FacultyNews
 {
     public static function getFacultyNews(): array
     {
-        $condition = 'Institut_id IN (
+        $conditition = '';
+        if ($GLOBALS['perm']->have_perm('root')) {
+            $condition = 'TRUE ORDER BY Name ASC';
+        } else {
+            $condition = 'Institut_id IN (
                         SELECT Institut_id
                         FROM user_inst
                         WHERE user_id = :user_id
                      ) ORDER BY Name ASC';
+        }
         $institutes = Institute::findBySql($condition, [
             ':user_id' => $GLOBALS['user']->id,
         ]);
