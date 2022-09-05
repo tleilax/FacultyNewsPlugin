@@ -39,7 +39,9 @@ class FacultyNewsController extends PluginController
             }
             $entry['newNews'] = $iNews_new;
 
-            $this->news[] = $entry;
+            if (count($entry['news']) > 0) {
+                $this->news[] = $entry;
+            }
         }
 
         if (!$this->news) {
