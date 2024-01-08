@@ -8,30 +8,28 @@ class FacultyNews
 {
     public static function getFacultyNews(): array
     {
-        $conditition = '';
-        if ($GLOBALS['perm']->have_perm('root')) {
-            $condition = 'TRUE ORDER BY Name ASC';
-        } else {
-            $condition = 'Institut_id IN (
-                        SELECT Institut_id
-                        FROM user_inst
-                        WHERE user_id = :user_id
-                     ) ORDER BY Name ASC';
+        $condition = "1 ORDER BY Name";
+        $parameters = [];
+        if (!$GLOBALS['perm']->have_perm('root')) {
+            $condition = "Institut_id IN (
+                              SELECT Institut_id
+                              FROM user_inst
+                              WHERE user_id = ?
+                          ) ORDER BY Name";
+            $parameters[] = User::findCurrent()->id;
         }
-        $institutes = Institute::findBySql($condition, [
-            ':user_id' => $GLOBALS['user']->id,
-        ]);
-
-        $result = [];
-        foreach ($institutes as $institut) {
-            $result[$institut->id] = [
-                'name'     => $institut->name,
-                'institut' => $institut,
-                'isAdmin'  => self::editableForUser($institut->Institut_id),
-                'news'     => StudipNews::GetNewsByRange($institut->id, true, true),
-            ];
-        }
-        return $result;
+        return Institute::findAndMapBySQL(
+            function (Institute $institute): array {
+                return [
+                    'name'     => $institute->name,
+                    'institut' => $institute,
+                    'isAdmin'  => self::editableForUser($institute->id),
+                    'news'     => StudipNews::GetNewsByRange($institute->id, true, true),
+                ];
+            },
+            $condition,
+            $parameters
+        );
     }
 
     public static function editableForUser(string $institute_id): bool
