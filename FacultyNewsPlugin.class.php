@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/bootstrap.php';
+require_once __DIR__ . '/bootstrap.php';
 
 /**
  * FacultyNewsPlugin.class.php
@@ -12,12 +12,18 @@ class FacultyNewsPlugin extends StudIPPlugin implements PortalPlugin
     public function getPortalTemplate()
     {
         $trails_root = $this->getPluginPath();
-        $dispatcher = new Trails_Dispatcher(
-            $trails_root,
-            rtrim(PluginEngine::getURL($this, [], '', true), '/'),
-            'display'
-        );
-        $dispatcher->current_plugin = $this;
+
+        if (class_exists(PluginDispatcher::class)) {
+            $dispatcher = app(PluginDispatcher::class, ['plugin' => $this]);
+        } else {
+            $dispatcher = new Trails_Dispatcher(
+                $trails_root,
+                rtrim(PluginEngine::getURL($this, [], '', true), '/'),
+                'display'
+            );
+            $dispatcher->current_plugin = $this;
+        }
+
         $controller = new FacultyNewsController($dispatcher);
 
         $response = $controller->relay('facultyNews/display');
